@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">{{ area.name }}</h1>
+    <a class="btn btn-primary mb-4" href="/">Go Back</a>
+
+    {% if area.is_secret and session.get('role') == 'admin' %}
+    <h2>Users with access:</h2>
+    <ul class="list-group mb-4">
+        {% for user in users %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ user.username }}
+            <form method="POST" action="{{ url_for('area.deny_access', area_id=area.id, user_id=user.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ session['csrf_token'] }}">
+                <button class="btn btn-danger" type="submit">Deny access</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    <form method="POST" action="{{ url_for('area.grant_access', area_id=area.id) }}" class="form-group">
+        <input type="hidden" name="csrf_token" value="{{ session['csrf_token'] }}">
+        <div class="form-group">
+            <input class="form-control" type="text" name="username" placeholder="Username" required>
+        </div>
+        <button class="btn btn-success mt-2" type="submit">Grant access</button>
+    </form>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-danger mt-2">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    {% endif %}
+
+    <h2>Threads:</h2>
+    {% if not threads %}
+    <p class="text-center">There are currently no threads in this discussion area.</p>
+    {% endif %}
+    <ul class="list-group">
+        {% for thread in threads %}
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="{{ url_for('thread.show', id=thread.id) }}">{{ thread.title }}</a>
+                {% if session.get('role') == 'admin' or session.get('user_id') == thread.creator_id %}
+                <div>
+                    <form method="POST" action="{{ url_for('thread.delete', id=thread.id) }}" style="display:inline;">
+                        <input type="hidden" name="csrf_token" value="{{ session['csrf_token'] }}">
+                        <button class="btn btn-danger" type="submit">Remove</button>
+                    </form>
+                    <form method="GET" action="{{ url_for('thread.edit', id=thread.id) }}" style="display:inline;">
+                        <button class="btn btn-secondary" type="submit">Modify</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% if 'username' in session %}
+    <form method="post" class="mt-4">
+        <h3>Create a new thread:</h3>
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input class="form-control" type="text" id="title" name="title" required>
+        </div>
+        <div class="form-group">
+            <label for="initial_message">Initial message:</label>
+            <textarea class="form-control" id="initial_message" name="initial_message" required></textarea>
+        </div>
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <button class="btn btn-primary" type="submit">Create thread</button>
+    </form>
+    {% endif %}
+    {% if error %}
+    <div class="alert alert-danger mt-2">{{ error }}</div>
+    {% endif %}
+</div>
+{% endblock %}

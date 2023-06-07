@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+    {% set form_url = 'auth.login' %}
+    {% set button_label = 'Login' %}
+    {% block form_title %}<h1>Login</h1>{% endblock %}
+    {% include "form_layout.html" %}
+{% endblock %}

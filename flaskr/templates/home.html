@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h1 class="text-center">Welcome to the Discussion App</h1>
+    <h2 class="text-center mt-4">Discussion Areas</h2>
+    <ul class="list-group mb-4">
+        {% for area in areas %}
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col">
+                    <a href="{{ url_for('area.show', id=area.id) }}">{{ area.name }}</a>
+                </div>
+                <div class="col">
+                    <div class="d-flex flex-column align-items-start">
+                        <span class="badge bg-primary-light text-dark rounded-pill d-block mb-1">{{ area.num_threads }} Threads</span>
+                        <span class="badge bg-secondary-light text-dark rounded-pill d-block mb-1">{{ area.num_messages }} Messages</span>
+                        <span class="badge bg-success-light text-dark rounded-pill d-block mb-1">Latest: {{ area.latest_message_timestamp }}</span>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    {% if session.get('role') == 'admin' %}
+                    <form method="POST" action="{{ url_for('area.delete', id=area.id) }}">
+                        <input type="hidden" name="csrf_token" value="{{ session['csrf_token'] }}">
+                        <button class="btn btn-danger" type="submit">Remove</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    
+    
+    
+        
+
+    {% if session.get('role') == 'admin' %}
+    <h2 class="text-center">Create new area</h2>
+    <form method="POST" action="{{ url_for('area.create') }}" class="form-group">
+        <input type="hidden" name="csrf_token" value="{{ session['csrf_token'] }}">
+        <div class="form-group">
+            <input class="form-control" type="text" name="name" placeholder="Area name" required>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="is_secret" value="true" id="isSecretCheck">
+            <label class="form-check-label" for="isSecretCheck">Secret Area</label>
+        </div>
+        <button class="btn btn-primary mt-2" type="submit">Create Area</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

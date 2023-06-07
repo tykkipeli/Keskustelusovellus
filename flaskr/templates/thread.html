@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">{{ thread.title }}</h2>
+    <a class="btn btn-primary mb-4" href="{{ url_for('area.show', id=thread.area_id) }}">Go Back</a>
+    {% if not messages %}
+    <p class="text-center">There are currently no messages in this thread.</p>
+    {% endif %}
+    {% for message in messages %}
+        <div class="list-group mb-4">
+            <div class="list-group-item">
+                <p><b>{{ message.sender }}</b>: {{ message.content }}</p>
+                <p>Sent at: {{ message.timestamp }}</p>
+                {% if session.get('role') == 'admin' or session.get('user_id') == message.sender_id %}
+                    <div>
+                        <form method="POST" action="{{ url_for('message.delete', id=message.id) }}" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="{{ session['csrf_token'] }}">
+                            <button class="btn btn-danger" type="submit">Remove</button>
+                        </form>
+                        <form method="GET" action="{{ url_for('message.edit', id=message.id) }}" style="display:inline;">
+                            <button class="btn btn-secondary" type="submit">Modify</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+
+    {% if 'username' in session %}
+    <h3>Add a new message:</h3>
+    <form method="POST" class="form-group">
+        <input type="hidden" name="csrf_token" value="{{ session['csrf_token'] }}">
+        <div class="form-group">
+            <textarea class="form-control" name="content" required></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+    {% if error %}
+        <div class="alert alert-danger mt-2">{{ error }}</div>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
