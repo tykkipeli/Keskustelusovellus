@@ -10,4 +10,6 @@ Tsoha-kursille tehty yksinkertainen keskustelusovellus, joka vastaa kurssimateri
 * Ylläpitäjät voivat lisätä ja poistaa keskustelualueita sekä luoda salaisia alueita ja määrittää käyttöoikeudet niille.
 * Myös ilman kirjautumista voi tarkastella ei-salattujen viestiketjujen sisältöjä, mutta ei voi itse lähettää viestejä
 
-Sovellus tulee olemaan testattavissa fly.io-palvelussa: 
+Sovellus on nyt testattavissa fly.io-palvelussa: https://tykkipeli-discussion-app.fly.dev/
+
+Jos haluat kokeilla admin-oikeuksien käyttämistä sovelluksessa, niin fly-palvelimen tietokantaan on tallennettu yksi admin käyttäjä käyttäjätunnuksella 'admin' ja salasanalla 'admin'
