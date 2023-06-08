@@ -1,0 +1,10 @@
+{% extends 'edit_layout.html' %}
+
+{% set header = 'Modify Message' %}
+{% set cancel_url = url_for('thread.show', id=message.thread_id) %}
+{% set field_name = 'content' %}
+{% set field_value = message.content %}
+
+{% block content %}
+    {{ super() }}
+{% endblock %}

@@ -1,12 +1,12 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<h2>Modify Message</h2>
-<a class="btn btn-primary mb-4" href="{{ url_for('thread.show', id=message.thread_id) }}">Cancel</a>
+<h2>{{ header }}</h2>
+<a class="btn btn-primary mb-4" href="{{ cancel_url }}">Cancel</a>
 <form method="POST" class="form-group">
     <input type="hidden" name="csrf_token" value="{{ session['csrf_token'] }}">
     <div class="form-group">
-        <textarea class="form-control" name="content" required>{{ message.content }}</textarea>
+        <textarea class="form-control" name="{{ field_name }}" required>{{ field_value }}</textarea>
     </div>
     <button class="btn btn-primary" type="submit">Submit</button>
 </form>

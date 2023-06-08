@@ -33,7 +33,10 @@ def create():
     check_admin()
     name = request.form['name']
     is_secret = 'is_secret' in request.form
-    create_area(name, is_secret)
+    try:
+        create_area(name, is_secret)
+    except IntegrityError:
+        flash('This area already exists', 'error')
     return redirect(url_for('home.index'))
 
 @bp.route('/delete/<int:id>', methods=['POST'])

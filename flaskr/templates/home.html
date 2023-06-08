@@ -14,9 +14,12 @@
                 </div>
                 <div class="col">
                     <div class="d-flex flex-column align-items-start">
-                        <span class="badge bg-primary-light text-dark rounded-pill d-block mb-1">{{ area.num_threads }} Threads</span>
-                        <span class="badge bg-secondary-light text-dark rounded-pill d-block mb-1">{{ area.num_messages }} Messages</span>
-                        <span class="badge bg-success-light text-dark rounded-pill d-block mb-1">Latest: {{ area.latest_message_timestamp }}</span>
+                        <span class="badge bg-primary-light text-dark rounded-pill d-block mb-1">{{ area.num_threads }}
+                            Threads</span>
+                        <span class="badge bg-secondary-light text-dark rounded-pill d-block mb-1">{{ area.num_messages
+                            }} Messages</span>
+                        <span class="badge bg-success-light text-dark rounded-pill d-block mb-1">Latest: {{
+                            area.latest_message_timestamp }}</span>
                     </div>
                 </div>
                 <div class="col-auto">
@@ -31,10 +34,10 @@
         </li>
         {% endfor %}
     </ul>
-    
-    
-    
-        
+
+
+
+
 
     {% if session.get('role') == 'admin' %}
     <h2 class="text-center">Create new area</h2>
@@ -49,6 +52,15 @@
         </div>
         <button class="btn btn-primary mt-2" type="submit">Create Area</button>
     </form>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-danger mt-2">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     {% endif %}
 </div>
 {% endblock %}

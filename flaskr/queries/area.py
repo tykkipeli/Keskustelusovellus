@@ -24,6 +24,8 @@ def delete_area(id):
     db.session.execute(sql_messages, {'id': id})
     sql_threads = text('DELETE FROM threads WHERE area_id = :id')
     db.session.execute(sql_threads, {'id': id})
+    sql_secret_areas = text('DELETE FROM secret_areas WHERE area_id = :id')
+    db.session.execute(sql_secret_areas, {'id': id})
     sql_areas = text('DELETE FROM areas WHERE id = :id')
     db.session.execute(sql_areas, {'id': id})
     db.session.commit()

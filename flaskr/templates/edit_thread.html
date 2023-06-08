@@ -1,16 +1,10 @@
-{% extends 'layout.html' %}
+{% extends 'edit_layout.html' %}
+
+{% set header = 'Modify Thread Title' %}
+{% set cancel_url = url_for('area.show', id=thread.area_id) %}
+{% set field_name = 'title' %}
+{% set field_value = thread.title %}
 
 {% block content %}
-<h2>Modify thread title</h2>
-<a class="btn btn-primary mb-4" href="{{ url_for('area.show', id=thread.area_id) }}">Cancel</a>
-<form method="POST" class="form-group">
-    <input type="hidden" name="csrf_token" value="{{ session['csrf_token'] }}">
-    <div class="form-group">
-        <textarea class="form-control" name="title" required>{{ thread.title }}</textarea>
-    </div>
-    <button class="btn btn-primary" type="submit">Submit</button>
-</form>
-{% if error %}
-    <div class="alert alert-danger mt-2">{{ error }}</div>
-{% endif %}
+    {{ super() }}
 {% endblock %}

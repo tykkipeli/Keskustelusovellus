@@ -24,7 +24,7 @@ def edit(id):
         if error is None:
             update_message(id, content)
             return redirect(url_for('thread.show', id=message['thread_id']))
-    return render_template('edit.html', message=message, error=error)
+    return render_template('edit_message.html', message=message, error=error)
 
 
 def get_message_or_abort(id):
