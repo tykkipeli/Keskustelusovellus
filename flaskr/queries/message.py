@@ -11,7 +11,8 @@ def get_message(id):
     sql = text('SELECT id, content, timestamp, thread_id, sender_id FROM messages WHERE id = :id')
     result = db.session.execute(sql, {'id': id})
     row = result.fetchone()
-    return {'id': row[0], 'content': row[1], 'timestamp': row[2], 'thread_id': row[3], 'sender_id': row[4]} if row else None
+    return {'id': row[0], 'content': row[1], 'timestamp': row[2],
+            'thread_id': row[3], 'sender_id': row[4]} if row else None
 
 def update_message(id, content):
     sql = text('UPDATE messages SET content = :content WHERE id = :id')
@@ -32,7 +33,8 @@ def get_messages_by_thread_id(thread_id):
         ORDER BY messages.timestamp
     """)
     result = db.session.execute(sql, {'thread_id': thread_id})
-    messages = [{'id': row[0], 'sender': row[1], 'sender_id': row[2], 'timestamp': format_timestamp(row[3]), 'content': row[4]} for row in result]
+    messages = [{'id': row[0], 'sender': row[1], 'sender_id': row[2],
+                 'timestamp': format_timestamp(row[3]), 'content': row[4]} for row in result]
     return messages
 
 def search_messages(query, user_id, role):
@@ -60,6 +62,7 @@ def search_messages(query, user_id, role):
             WHERE (areas.is_secret = false OR secret_areas.user_id = :user_id) AND messages.content ILIKE :query
         """)
         result = db.session.execute(sql, {'user_id': user_id, 'query': '%' + query + '%'})
-        
-    messages = [{'content': row[0], 'thread': row[1], 'area': row[2], 'thread_id': row[3], 'area_id': row[4], 'sender': row[5]} for row in result]
+
+    messages = [{'content': row[0], 'thread': row[1], 'area': row[2],
+                 'thread_id': row[3], 'area_id': row[4], 'sender': row[5]} for row in result]
     return messages

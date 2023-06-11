@@ -75,5 +75,3 @@ def get_area_or_abort(id):
 def check_read_permission(area, user_id, user_role):
     if user_role != "admin" and not user_has_access_to_area(user_id, area["id"]):
         abort(403)
-
-

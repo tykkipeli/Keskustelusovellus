@@ -1,5 +1,5 @@
-from flaskr.database import db
 from sqlalchemy.sql import text
+from flaskr.database import db
 
 def create_thread(title, area_id, creator_id, initial_message):
     sql = text('INSERT INTO threads (title, area_id, creator_id) VALUES (:title, :area_id, :creator_id) RETURNING id')
@@ -8,7 +8,7 @@ def create_thread(title, area_id, creator_id, initial_message):
 
     sql_msg = text('INSERT INTO messages (content, thread_id, sender_id) VALUES (:content, :thread_id, :sender_id)')
     db.session.execute(sql_msg, {'content': initial_message, 'thread_id': thread_id, 'sender_id': creator_id})
-    
+
     db.session.commit()
 
 def get_thread(id):
@@ -26,7 +26,7 @@ def delete_thread(id):
     sql_messages = text('DELETE FROM messages WHERE thread_id = :id')
     db.session.execute(sql_messages, {'id': id})
     sql_thread = text('DELETE FROM threads WHERE id = :id')
-    db.session.execute(sql_thread, {'id': id})    
+    db.session.execute(sql_thread, {'id': id})
     db.session.commit()
 
 def get_threads_by_area_id(area_id):

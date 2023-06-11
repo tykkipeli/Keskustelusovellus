@@ -1,5 +1,5 @@
-from flaskr.database import db
 from sqlalchemy.sql import text
+from flaskr.database import db
 from flaskr.utils import format_timestamp
 
 def create_area(name, is_secret):
@@ -55,8 +55,8 @@ def get_areas(user_id, role):
         """)
         result = db.session.execute(sql, {'user_id': user_id})
 
-    return [{'id': row[0], 'name': row[1], 'is_secret': row[2], 
-             'num_threads': row[3], 'num_messages': row[4], 
+    return [{'id': row[0], 'name': row[1], 'is_secret': row[2],
+             'num_threads': row[3], 'num_messages': row[4],
              'latest_message_timestamp': format_timestamp(row[5])} for row in result.fetchall()]
 
 def add_user_to_area(user_id, area_id):

@@ -1,7 +1,7 @@
 import secrets
-from flask import Blueprint, render_template, request, session, redirect, url_for, abort
-from flaskr.queries.user import get_user_by_username, create_user
 from werkzeug.security import check_password_hash
+from flask import Blueprint, render_template, request, session, redirect, url_for
+from flaskr.queries.user import get_user_by_username, create_user
 from flaskr.utils import validate_password, validate_username
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -23,8 +23,7 @@ def register():
             if user is None:
                 create_user(username, password)
                 return redirect(url_for('auth.login'))
-            else:
-                error = 'User already exists!'
+            error = 'User already exists!'
     return render_template('register.html', error=error)
 
 @bp.route('/login', methods=('GET', 'POST'))
@@ -40,8 +39,7 @@ def login():
             if check_password_hash(user['password'], password):
                 create_user_session(user)
                 return redirect(url_for('home.index'))
-            else:
-                error = 'Incorrect password!'
+            error = 'Incorrect password!'
     return render_template('login.html', error=error)
 
 def create_user_session(user):
@@ -55,6 +53,3 @@ def create_user_session(user):
 def logout():
     session.clear()
     return redirect(url_for('home.index'))
-
-
-
